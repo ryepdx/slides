@@ -540,7 +540,9 @@ angular.module('hello', ['goodbye']);
 						<p>&nbsp;&nbsp;&lt;dl class=&quot;tabs&quot; data-tab&gt;</p>
 						<p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd <span class="fragment highlight-current">ng-repeat=&quot;pane in panes&quot;</span><br />
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current">ng-class=&quot;{active:pane.selected}&quot;</span>&gt;</p>
-						<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a href=&quot;&quot; <span class="fragment highlight-current">ng-click=&quot;select(pane)&quot;</span>&gt;{{pane.title}}&lt;/a&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a href=&quot;&quot; <span class="fragment highlight-current">ng-click=&quot;select(pane)&quot;</span>&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{pane.title}}</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/a&gt;</p>
 						<p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;</p>
 						<p>&nbsp;&nbsp;&lt;/dl&gt;</p>
 						<p>&nbsp;&nbsp;&lt;div class=&quot;tabs-content&quot; <span class="fragment highlight-current">ng-transclude</span>&gt;&lt;/div&gt;</p>
