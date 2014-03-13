@@ -43,6 +43,10 @@
 		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
 		<script>
 			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+            (function () {
+                var img = new Image();
+                img.src = "img/nothing-easy.gif";
+             })();
 		</script>
 
 		<!--[if lt IE 9]>
