@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+        <base href="../reveal.js/">
+		<meta charset="utf-8">
+
+		<title>reveal.js - The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="lib/css/foundation.min.css">
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/night.css" id="theme">
+		<link rel="stylesheet" href="css/customizations.css">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<link rel="stylesheet" href="lib/css/forms-min.css">
+
+		<style>
+			.reveal div.tabs-content {
+				color: black;
+				background-color: white;
+				border-radius: 0px 10px 10px 10px;
+			}
+			.reveal .tabs dd>a {
+				font-size: 100%;
+				color: black;
+				border-radius: 10px 10px 0px 0px;
+			}
+			.reveal .tabs dd>a:hover {
+				color: gray;
+			}
+		</style>
+		<script src="js/angular.js"></script>
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+		<!-- AngularJS setup -->
+		<script>
+			var tabsCtrl = function ($scope, $element) {
+				var panes = $scope.panes = [];
+				
+				$scope.select = function(pane) {
+					angular.forEach(panes, function(pane) {
+						pane.selected = false;
+					});
+					pane.selected = true;
+				}
+				
+				this.addPane = function(pane) {
+					if (panes.length == 0) $scope.select(pane);
+					panes.push(pane);
+				}
+			};
+			
+			angular
+			.module('ryepdx.slides', [])
+			.controller('helloCtrl', function ($scope) {
+				$scope.yourName = "Ishmael";
+			})
+			.controller('searchCtrl', function ($scope) {
+				$scope.people = [
+					{ name: "Joey", money: 2 },
+					{ name: "Flo", money: 1.75 },
+					{ name: "Jordan", money: 0.10 }
+				];
+			})
+			.directive('tabs', function () {
+				return {
+					restrict: 'E', 
+					transclude: true, 
+					scope: {}, 
+					controller: tabsCtrl,
+					template: '<div><dl class="tabs" data-tab>' +
+							'<dd ng-repeat="pane in panes" ng-class="{active:pane.selected}">' +
+								'<a href="" ng-click="select(pane)">{{pane.title}}</a>' +
+							'</dd>' +
+						'</dl>' +
+						'<div class="tabs-content" ng-transclude></div></div>',
+					replace: true 
+				}
+			})
+			.directive('pane', function() {
+				return {
+					require: '^tabs',
+					restrict: 'E',
+					transclude: true,
+					scope: { title: '@' },
+					link: function(scope, element, attrs, tabsCtrl) {
+						tabsCtrl.addPane(scope);
+					},
+					template:
+						'<div class="content" ng-class="{active: selected}" ng-transclude>' +
+						'</div>',
+					replace: true
+				};
+			})
+		</script>
+		<style>
+			.reveal div.state-background {
+				background-image: url(img/zwartevilt.png);
+			}
+		</style>
+	</head>
+
+	<body ng-app="ryepdx.slides">
+		<div class="reveal">
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section class="title-slide">
+					<div>
+						<h1>AngularJS</h1>
+						<h2>HTML Reloaded</h2>
+					</div>
+					<footer>
+						<p>Ryan Casey &mdash; ryepdx.com &mdash; @ryepdx</p>
+					</footer>
+				</section>
+				<section>
+					<section>
+						<img src="img/me.jpeg" style="max-height:300px">
+						<h2 class="fragment">Who am I?</h2>
+						<ul>
+							<li class="fragment">Building websites since 5th grade</li>
+							<li class="fragment">Recently repatriated to Javascript</li>
+							<li class="fragment">Playing with AngularJS since mid-2013</li>
+						</ul>
+					</section>
+					<section>
+						<img src="img/your-face-here.jpg" style="max-height:300px">
+						<h2 class="fragment">Who are you?</h2>
+						<ul>
+							<li class="fragment">Frontend developer with a little Javascript skill</li>
+							<li class="fragment">Want to minimize time spent writing "glue" code</li>
+							<li class="fragment">Ready to join the reactive revolution</li>
+						</ul>
+					</section>
+					<section>
+						<img src="img/firehose.gif">
+					</section>
+				</section>
+				<section>
+					<section>
+						<img src="img/nothing-easy.gif">
+						<h2>Dynamic views are hard.</h2>
+					</section>
+					<section>
+						<h2>HTML is declarative.</h2>
+						<h2>Javascript is imperative.</h2>
+					</section>
+					<section>
+						<h2>Impera-wha-?</h2><br />
+						<div class="fragment">
+							<h3>Imperative</h3>
+							<p>Telling the computer how to do something.</p>
+							<br />
+						</div>
+						<div class="fragment">
+							<h3>Declarative</h3>
+							<p>Telling the computer to do something and letting it decide how.</p>
+						</div>
+					</section>
+				</section>
+				<section>
+					<section>
+						<div>
+							<form class="pure-form">
+									<input type="text" style="font-size:100%;text-align:center;" placeholder="What is your name?" ng-model="yourName">
+							</form><br />
+							<h3 ng-show="yourName">Hello {{yourName}}!</h3>
+						</div>
+					</section>
+					<section>
+						<h2>Imperative</h2>
+						<h3>(jQuery)</h3>
+						<pre><code>&lt;!doctype html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;script src=&quot;jquery.js&quot;&gt;&lt;/script&gt;
+        &lt;script&gt;
+            $(document).ready(function () {
+                var $yourName = $(&quot;#yourName&quot;);
+                var $nameText = $(&quot;#nameText&quot;);
+                $yourName.keyup(function () {
+                    $nameText.text($yourName.val());
+                    $nameText.toggle($yourName.val() != "");
+                });
+            });
+        &lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;label&gt;Name:&lt;/label&gt;
+        &lt;input type=&quot;text&quot; placeholder=&quot;What is your name?&quot; id=&quot;yourName&quot;&gt;
+        &lt;h3 style=&quot;display: none&quot;&gt;Hello &lt;span id=&quot;nameText&quot;&gt;&lt;/span&gt;&lt;/h3&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+					</section>
+					<section>
+						<h2>Declarative<span class="fragment fade-in" data-fragment-index="1">*</span></h2>
+						<h3>(AngularJS)</h3>
+						<pre><code data-trim ng-non-bindable>
+&lt;!doctype html&gt;
+&lt;html ng-app&gt;
+    &lt;head&gt;
+        &lt;script src=&quot;angular.min.js&quot;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;input type=&quot;text&quot; placeholder=&quot;What is your name?&quot; ng-model=&quot;yourName&quot;&gt;
+        &lt;h3 ng-show=&quot;yourName&quot;&gt;Hello {{yourName}}!&lt;/h3&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+					<h4><span class="fragment fade-in" data-fragment-index="1">*Declarativeness enlarged to show texture.</span></h4>
+				</section>
+			</section>
+			<section>
+				<section>
+					<h2>Modules</h2>
+					<ul>
+						<li class="fragment">Declared via <code>ng-app</code></li>
+						<li class="fragment">Can be imported and used by other modules</li>
+						<li class="fragment">Can include many on one page (but usually not necessary)</li>
+					</ul>
+				</section>
+				<section>
+					<code data-trim ng-non-bindable style="text-align: left">
+						<p>&lt;!doctype html&gt;</p>
+						<p>&lt;html<span class="fragment disappear" data-fragment-index="2"> <span class="fragment highlight" data-fragment-index="1">ng-app</span></span>&gt;</p>
+						<p>&nbsp;&nbsp;&lt;head&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src=&quot;angular.min.js&quot;&gt;&lt;/script&gt;</p>
+						<p>&nbsp;&nbsp;&lt;/head&gt;</p>
+						<p>&nbsp;&nbsp;&lt;body<span class="fragment disappear" data-fragment-index="3"><span class="fragment appear" data-fragment-index="2"> <span class="highlight" data-fragment-index="2">ng-app</span></span></span>&gt;</p>
+						<p><span class="fragment appear" data-fragment-index="3">&nbsp;&nbsp;&nbsp;&nbsp;<span class="highlight">&lt;div ng-app<span class="fragment appear highlight" data-fragment-index="4">="hello"</span>&gt;</span></span></p>
+						<p><span class="fragment appear" data-fragment-index="3">&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type=&quot;text&quot;<br />
+						<span class="fragment appear" data-fragment-index="3">&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;placeholder=&quot;What is your name?&quot;<br />
+						<span class="fragment appear" data-fragment-index="3">&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ng-model=&quot;yourName&quot;&gt;</p>
+						<p><span class="fragment appear" data-fragment-index="3">&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&lt;h3 ng-show=&quot;yourName&quot;&gt;Hello {{yourName}}!&lt;/h3&gt;</p>
+						<p><span class="fragment appear" data-fragment-index="3">&nbsp;&nbsp;&nbsp;&nbsp;<span class="highlight">&lt;/div&gt;</span></span></p>
+						<p>&nbsp;&nbsp;&lt;/body&gt;</p>
+						<p>&lt;/html&gt;</p>
+					</code>
+				</section>
+				<section data-transition="linear">
+					<code data-trim>
+angular.module('hello', []);
+					</code>
+				</section>
+				<section data-transition="linear">
+					<code data-trim>
+angular.module('hello', ['goodbye']);
+					</code>
+				</section>
+			</section>
+			<section>
+				<section>
+					<h2>Controllers</h2>
+					<ul>
+						<li class="fragment">Mostly imperative</li>
+						<li class="fragment">Divide modules into views</li>
+						<li class="fragment">Interact directly with the data model</li>
+					</ul>
+				</section>
+				<section>
+					<code data-trim ng-non-bindable style="text-align: left">
+							<p>&lt;!doctype html&gt;</p>
+							<p>&lt;html ng-app="hello"&gt;</p>
+							<p>&nbsp;&nbsp;&lt;head&gt;</p>
+							<p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src=&quot;angular.min.js&quot;&gt;&lt;/script&gt;</p>
+							<p>&nbsp;&nbsp;&lt;/head&gt;</p>
+							<p>&nbsp;&nbsp;&lt;body&gt;</p>
+							<p><span class="fragment appear" data-fragment-index="1">&nbsp;&nbsp;&nbsp;&nbsp;<span class="highlight">&lt;div ng-controller='helloCtrl'&gt;</span></span></p>
+							<p><span class="fragment appear" data-fragment-index="1">&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type=&quot;text&quot;<br />
+							<span class="fragment appear" data-fragment-index="1">&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;placeholder=&quot;What is your name?&quot;<br />
+							<span class="fragment appear" data-fragment-index="1">&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ng-model=&quot;yourName&quot;&gt;</p>
+							<p><span class="fragment appear" data-fragment-index="1">&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&lt;h3 ng-show=&quot;yourName&quot;&gt;Hello {{yourName}}!&lt;/h3&gt;</p>
+							<p><span class="fragment appear" data-fragment-index="1">&nbsp;&nbsp;&nbsp;&nbsp;<span class="highlight">&lt;/div&gt;</span></span></p>
+							<p>&nbsp;&nbsp;&lt;/body&gt;</p>
+							<p>&lt;/html&gt;</p>
+					</code>
+				</section>
+				<section>
+					<code style="text-align:left">
+						<p><span class="fragment highlight-current">angular</span></p>
+						<p>&nbsp;&nbsp;<span class="fragment highlight-current">.module('hello', [])</p>
+						<p>&nbsp;&nbsp;<span class="fragment highlight-current">.controller('helloCtrl', function ($scope) {</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current">$scope.yourName = &quot;Ishmael&quot;</p>
+							<p>&nbsp;&nbsp;});</p>
+					</code>
+					<span class="fragment highlight-current"></span>
+				</section>
+				<section>
+					<div ng-controller="helloCtrl">
+						<form class="pure-form">
+							<input type="text" style="font-size:100%;text-align:center;" placeholder="What is your name?" ng-model="yourName">
+						</form><br />
+						<h3 ng-show="yourName">Hello {{yourName}}!</h3>
+					</div>
+				</section>
+			</section>
+			<section>
+				<section ng-non-bindable>
+					<h2>Templates</h2>
+					<ul>
+						<li class="fragment">Similar syntax to mustache.js</li>
+						<li class="fragment"><code>ng</code> attributes &amp; tags &amp; classes, oh my!<br /><span class="fragment">(i.e., directives)</span></li>
+						<li class="fragment">Two-way data binding</li>
+					</ul>
+				</section>
+				<section data-transition="linear">
+					<h2>A quick word on <code>$scope.apply</code></h2>
+				</section>
+				<section data-transition="linear">
+					<h2>Use <code>$scope.apply(callback)</code>,</h2>
+					<h2>not <code>$scope.apply()</code>.</h2>
+				</section>
+				<section>
+					<code data-trim ng-non-bindable style="text-align: left">
+						<p>&lt;!doctype html&gt;</p>
+						<p>&lt;html ng-app="hello"&gt;</p>
+						<p>&nbsp;&nbsp;&lt;head&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src=&quot;angular.min.js&quot;&gt;&lt;/script&gt;</p>
+						<p>&nbsp;&nbsp;&lt;/head&gt;</p>
+						<p>&nbsp;&nbsp;&lt;body&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;div ng-controller='helloCtrl'&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type=&quot;text&quot;<br />
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;placeholder=&quot;What is your name?&quot;<br />
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current">ng-model=&quot;yourName&quot;</span>&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h3 <span class="fragment highlight-current">ng-show=&quot;yourName&quot;</span>&gt;Hello <span class="fragment highlight-current">{{yourName}}</span>!&lt;/h3&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;</p>
+						<p>&nbsp;&nbsp;&lt;/body&gt;</p>
+						<p>&lt;/html&gt;</p>
+					</code>
+					<aside class="notes">
+						2-way: ng-model
+						1-way: ng-show(?), {{yourName}}
+					</aside>
+				</section>
+				<section ng-non-bindable>
+					<h2>Template Expressions</h2>
+					<ul>
+						<li class="fragment">Primarily used as arguments to <code>ng</code> attributes.</li>
+						<li class="fragment">Forgiving: undefined variables don't cause errors.</li>
+						<li class="fragment">Evaluated against the controller's scope.<br />(e.g., {{yourName}} == $scope.yourName)</li>
+					</ul>
+				</section>
+				<section>
+					<code data-trim ng-non-bindable style="text-align: left">
+						<p>&lt;!doctype html&gt;</p>
+						<p>&lt;html ng-app="hello"&gt;</p>
+						<p>&nbsp;&nbsp;&lt;head&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src=&quot;angular.min.js&quot;&gt;&lt;/script&gt;</p>
+						<p>&nbsp;&nbsp;&lt;/head&gt;</p>
+						<p>&nbsp;&nbsp;&lt;body&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;div ng-controller='helloCtrl'&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type=&quot;text&quot;<br />
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;placeholder=&quot;What is your name?&quot;<br />
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ng-model=&quot;yourName&quot;&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h3 ng-show=&quot;yourName&quot;&gt;Hello {{<span class="fragment highlight">yourName</span>}}!&lt;/h3&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;</p>
+						<p>&nbsp;&nbsp;&lt;/body&gt;</p>
+						<p>&lt;/html&gt;</p>
+					</code>
+				</section>
+				<section>
+					<h2>More Expressions</h2><br />
+					<p><code class="fragment" data-fragment-index="1">a * b</code></p>
+					<p><code class="fragment" data-fragment-index="1">a + b</code></p><br />
+					<p><code class="fragment" data-fragment-index="2">user.name</code></p>
+					<p><code class="fragment" data-fragment-index="2">items[index]</code></p>
+					<p><code class="fragment" data-fragment-index="2">foo.toUpperCase()</code></p>
+				</section>
+				<section ng-non-bindable>
+					<h2>Expression Filters</h2>
+					<ul>
+						<li class="fragment">Alter the value of an expression</li>
+						<li class="fragment">Can be chained</li>
+						<li class="fragment">Take the form <code>&lt;expression&gt; | &lt;filter&gt; [: arg]*</code></li>
+					</ul>
+				</section>
+				<section>
+					<form ng-controller="searchCtrl" class="pure-form">
+						<p><input type="text" style="font-size:100%;text-align:center;" ng-model="search"></p>
+						<ol>
+							<li ng-repeat="person in people | filter: { name:search } | orderBy:'money':true">
+								{{ person.name }} &mdash; {{ person.money | currency }}
+							</li>
+						</ol>
+					</form>
+				</section>
+				<section>
+					<code data-trim ng-non-bindable style="text-align:left">
+					<p>&lt;body ng-app=&quot;search&quot;&gt;</p>
+					<p>&nbsp;&lt;form ng-controller=&quot;searchCtrl&quot;&gt;</p>
+					<p>&nbsp;&nbsp;&lt;p&gt;&lt;input type=&quot;text&quot; ng-model=&quot;search&quot;&gt;&lt;/p&gt;</p>
+					<p>&nbsp;&nbsp;&lt;ol&gt;</p>
+					<p>&nbsp;&nbsp;&nbsp;&lt;li <span class="fragment highlight" data-fragment-index="1">ng-repeat=&quot;person in people</span><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight" data-fragment-index="1">| filter:{ 'name':search }</span><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight" data-fragment-index="1">| orderBy:&#39;money&#39;:true&quot;</span>&gt;</p>
+					<p>&nbsp;&nbsp;&nbsp;&nbsp;{{ person.name }} &amp;mdash;</p>
+					<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight" data-fragment-index="2">{{ person.money | currency }}</span></p>
+					<p>&nbsp;&nbsp;&nbsp;&lt;/li&gt;</p>
+					<p>&nbsp;&nbsp;&lt;/ol&gt;</p>
+					<p>&nbsp;&lt;/form&gt;</p>
+					<p>&lt;/body&gt;</p>
+					</code>
+				</section>
+				<section>
+					<code data-trim ng-non-bindable style="text-align:left">
+						<p>angular</p>
+						<p>.module('search')</p>
+						<p>.controller('searchCtrl', function ($scope) {</p>
+						<p>&nbsp;&nbsp;$scope.people = [</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;{ name: "Joey", money: 2 },</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;{ name: "Flo", money: 1.75 },</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;{ name: "Jordan", money: 0.10 }</p>
+						<p>&nbsp;&nbsp;];</p>
+						<p>});</p>
+				</code>
+				</section>
+			</section>
+			<section>
+				<section>
+					<h2>Directives</h2>
+					<ul>
+						<li class="fragment">Create new tags and attributes!</li>
+						<li class="fragment">Directives are why you don't need jQuery (kinda).</li>
+						<li class="fragment">ng-show == ng_show == ng:show == ngShow</li>
+					</ul>
+				</section>
+				<section>
+					<h2>You can get with this...</h2>
+					<code data-trim style="text-align: left">
+						<p>&lt;tabs&gt;</p>
+						<p>&nbsp;&nbsp;&lt;pane title=&quot;English&quot;&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;Hello!</p>
+						<p>&nbsp;&nbsp;&lt;/pane&gt;</p>
+						<p>&nbsp;&nbsp;&lt;pane title=&quot;French&quot;&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;Bonjour!</p>
+						<p>&nbsp;&nbsp;&lt;/pane&gt;</p>
+						<p>&lt;/tabs&gt;</p>
+					</code>
+				</section>
+				<section>
+					<h2>...or you can get with that.</h2>
+					<code data-trim style="text-align: left">
+						<p>&lt;div id=&quot;tabs&quot;&gt;</p>
+						<p>&nbsp;&nbsp;&lt;ul&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;a href=&quot;#en&quot;&gt;English&lt;/a&gt;&lt;/li&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;a href=&quot;#fr&quot;&gt;French&lt;/a&gt;&lt;/li&gt;</p>
+						<p>&nbsp;&nbsp;&lt;/ul&gt;</p>
+						<p>&nbsp;&nbsp;&lt;div id=&quot;en&quot;&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;Hello!</p>
+						<p>&nbsp;&nbsp;&lt;/div&gt;</p>
+						<p>&nbsp;&nbsp;&lt;div id=&quot;fr&quot;&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;Bonjour!</p>
+						<p>&nbsp;&nbsp;&lt;/div&gt;</p>
+						<p>&lt;/div&gt;</p>
+					</code>
+				</section>
+				<section>
+					<h2>(So how do you get with this?)</h2>
+					<code data-trim style="text-align: left">
+						<p>&lt;tabs&gt;</p>
+						<p>&nbsp;&nbsp;&lt;pane title=&quot;English&quot;&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;Hello!</p>
+						<p>&nbsp;&nbsp;&lt;/pane&gt;</p>
+						<p>&nbsp;&nbsp;&lt;pane title=&quot;French&quot;&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;Bonjour!</p>
+						<p>&nbsp;&nbsp;&lt;/pane&gt;</p>
+						<p>&lt;/tabs&gt;</p>
+					</code>
+				</section>
+				<section>
+					<code>angular.module('yourApp', ['theirModule']);</code>
+				</section>
+				<section>
+					<code>var app = angular.module('components', []);</code>
+				</section>
+				<section>
+					<h2>Defining <code>tabs</code></h2>
+				</section>
+				<section ng-non-bindable>
+					<code style="text-align:left">
+						<p><span class="fragment highlight-current" data-fragment-index="1">app.directive('tabs', function () {</span></p>
+						<p>&nbsp;&nbsp;return {</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current" data-fragment-index="2">restrict: 'E',<span class="fragment" data-fragment-index="2"> // Can be any of A, C, or E&nbsp;</span></span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current" data-fragment-index="3">transclude: true,<span class="fragment" data-fragment-index="3"> // Pass on parent scope?&nbsp;</span></span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current" data-fragment-index="4">scope: {},<span class="fragment" data-fragment-index="4"> // Inner scope definition&nbsp;</span></span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current" data-fragment-index="5">controller: tabsCtrl,</span><span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current" data-fragment-index="6">templateUrl: 'tabsTemplate.html',</span></span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current" data-fragment-index="7">replace: true<span class="fragment" data-fragment-index="7"> // Replace element or insert into?&nbsp;</span></span></p>
+						<p>&nbsp;&nbsp;}</p>
+						<p>});</p>
+						<span class="fragment highlight-current"></span>
+					</code>
+				</section>
+				<section>
+					<code style="text-align:left">
+						<p><span class="fragment highlight-current">var tabsCtrl = function ($scope, $element) {</span></p>
+						<p>&nbsp;&nbsp;<span class="fragment highlight-current">var panes = $scope.panes = [];</span></p>
+						<p>&nbsp;&nbsp;</p>
+						<p>&nbsp;&nbsp;<span class="fragment highlight-current">$scope.select = function(pane) {</span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current">angular.forEach(panes, function(pane) {</span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current">pane.selected = false;</span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;});</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current">pane.selected = true;</span></p>
+						<p>&nbsp;&nbsp;}</p>
+						<p>&nbsp;&nbsp;</p>
+						<p>&nbsp;&nbsp;<span class="fragment highlight-current">this.addPane = function(pane) {</span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current">if (panes.length == 0) $scope.select(pane);</span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current">panes.push(pane);</span></p>
+						<p>&nbsp;&nbsp;}</p>
+						<p>};</p>
+						<span class="fragment highlight-current"></span>
+					</code>
+					<aside class="notes">
+						$element == jqlite == jQuery plugins, if you want them!
+					</aside>
+				</section>
+				<section>
+					<code style="text-align:left">
+						<p>&lt;div&gt;</p>
+						<p>&nbsp;&nbsp;&lt;dl class=&quot;tabs&quot; data-tab&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd <span class="fragment highlight-current">ng-repeat=&quot;pane in panes&quot;</span><br />
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current">ng-class=&quot;{active:pane.selected}&quot;</span>&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a href=&quot;&quot; <span class="fragment highlight-current">ng-click=&quot;select(pane)&quot;</span>&gt;{{pane.title}}&lt;/a&gt;</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;</p>
+						<p>&nbsp;&nbsp;&lt;/dl&gt;</p>
+						<p>&nbsp;&nbsp;&lt;div class=&quot;tabs-content&quot; <span class="fragment highlight-current">ng-transclude</span>&gt;&lt;/div&gt;</p>
+						<p>&lt;/div&gt;</p>
+						<span class="fragment highlight-current"></span>
+					</code>
+				</section>
+				<section>
+					<h2>Defining <code>pane</code></h2>
+				</section>
+				<section>
+					<code style="text-align:left">
+						<p><span class="fragment highlight-current" data-fragment-index="1">app.directive('pane', function() {</p>
+						<p>&nbsp;&nbsp;return {</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current" data-fragment-index="2">require: '^tabs',<span class="fragment" data-fragment-index="2"> // Require parent's controller&nbsp;</span></span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current" data-fragment-index="3">restrict: 'E',<span class="fragment" data-fragment-index="3"> // E is for Element!&nbsp;</span></span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current" data-fragment-index="4">transclude: true,</span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current" data-fragment-index="5">scope: { title: '@<span class="fragment highlight-current" data-fragment-index="6">title</span>' },<span class="fragment" data-fragment-index="5"> // =title, &amp;title&nbsp;</span></span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current">link: function($scope, $elem, $attrs, tabsCtrl) {</span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current">tabsCtrl.addPane($scope);</span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;},</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current">template:</span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current">'&lt;div class=&quot;content&quot;' +</span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current">' ng-class=&quot;{active: selected}&quot' +</span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current">' ng-transclude&gt;&lt;/div&gt;';</span></p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fragment highlight-current">replace: true</span></p>
+						<p>&nbsp;&nbsp;};</p>
+						<p>});</p>
+						<span class="fragment highlight-current"></span>
+					</code>
+					<aside class="notes">
+						@ sets up one-way binding w/ attribute, evals expression.
+						= sets up two-way binding w/ parent scope variable, no expression eval.
+						&amp; allows the directive to pass values back to a function or expression in the parent scope.
+					</aside>
+				</section>
+				<section>
+					<code>&lt;link rel=&quot;stylesheet&quot; href=&quot;/css/foundation.min.css&quot;&gt;</code>
+				</section>
+				<section>
+					<tabs>
+						<pane title="English">
+							Hello!
+						</pane>
+						<pane title="French">
+							Bonjour!
+						</pane>
+					</tabs>
+				</section>
+			</section>
+			<section>
+				<h2>Services</h2>
+				<ul>
+					<li class="fragment">Created once and shared across controllers</li>
+					<li class="fragment">Use signals for cross-controller communication!</li>
+					<li class="fragment">Best for stateless, reusable code (e.g., the <code>$http</code> service)</li>
+				</ul>
+			</section>
+			<section>
+				<h2>Further Study</h2>
+				<ul>
+					<li class="fragment">Signals</li>
+					<li class="fragment">Dependency injection &amp; mocks</li>
+					<li class="fragment">E2E &amp; unit testing</li>
+					<li class="fragment">Internationalization support</li>
+				</ul>
+				<h3 class="fragment"><br /><a href="http://docs.angularjs.org/">docs.angularjs.org</a></h3>
+				<h3 class="fragment"><a href="https://github.com/angular/angular.js/wiki">github.com/angular/angular.js/wiki</a></h3>
+			</section>
+			<section>
+				<h2 class="fragment fade-out" style="position:relative;" data-fragment-index="1">Questions?</h2>
+				<h2 class="fragment fade-in" style="position:relative;top:-1.2em" data-fragment-index="1">Thank you!</h2>
+				<h4 style="position:relative;top:-1em;">These slides will be posted to <a href="http://ryepdx.com/slides">ryepdx.com/slides</a></h4>
+				<h4 style="position:relative;top:-1em;">For questions after the meetup, feel free to tweet <a href="http://twitter.com/ryepdx">@ryepdx</a></h4>
+			</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: false, //true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+		</script>
+
+	</body>
+</html>

@@ -1,0 +1,82 @@
+.reveal div.slides section.title-slide {
+	height: 100%;
+
+	/* Internet Explorer 10 */
+	display:-ms-flexbox!important;
+	-ms-flex-pack:center;
+	-ms-flex-align:center;
+
+	/* Firefox */
+	display:-moz-box!important;
+	-moz-box-pack:center;
+	-moz-box-align:center;
+
+	/* Safari, Opera, and Chrome */
+	display:-webkit-box!important;
+	-webkit-box-pack:center;
+	-webkit-box-align:center;
+
+	/* W3C */
+	display:box!important;
+	box-pack:center;
+	box-align:center;
+}
+
+.reveal footer {
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+}
+
+.reveal footer p {
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
+.reveal .slides section code .fragment.red {
+	color: #ff2c2d;
+}
+
+.reveal .slides section code .fragment.green {
+	color: #17ff2e;
+}
+
+.reveal .slides section code .fragment.blue {
+	color: #1b91ff;
+}
+
+.reveal .slides section .fragment.appear,
+.reveal .slides section .fragment.highlight.appear,
+.reveal .slides section .fragment.visible.disappear {
+	display: none;
+	opacity: 0;
+}
+
+.reveal .slides section .fragment.highlight.fade-in {
+	opacity: 0;
+}
+
+.reveal .slides section .fragment.highlight, 
+.reveal .slides section .fragment.highlight-current,
+.reveal .slides section .fragment.highlight.visible.fade-in,
+.reveal .slides section code .fragment.disappear,
+.reveal .slides section code .fragment.visible.appear {
+	display: inline;
+	opacity: 1;
+}
+
+.reveal .slides section .fragment.fade-out.highlight, 
+.reveal .slides section .fragment.disappear.highlight, 
+.reveal .slides section .fragment.visible.highlight,
+.reveal .slides section .fragment.highlight-current.current-fragment,
+.reveal .slides section .fragment .highlight {
+	background-color: white;
+	color: black;
+}
+
+.reveal h4.contact-bar {
+	text-align: center;
+	width: 100%;
+	margin-top: 3em;
+}
