@@ -594,12 +594,41 @@ angular.module('hello', ['goodbye']);
 				</section>
 			</section>
 			<section>
-				<h2>Services</h2>
-				<ul>
-					<li class="fragment">Created once and shared across controllers</li>
-					<li class="fragment">Use signals for cross-controller communication!</li>
-					<li class="fragment">Best for stateless, reusable code (e.g., the <code>$http</code> service)</li>
-				</ul>
+				<section>
+					<h2>Services</h2>
+					<ul>
+						<li class="fragment">Created once and shared across controllers</li>
+						<li class="fragment">Use signals for cross-controller communication!</li>
+						<li class="fragment">Best for stateless, reusable code (e.g., the <code>$http</code> service)</li>
+					</ul>
+				</section>
+				<section ng-non-bindable>
+					<code style="text-align:left">
+						<p>angular</p>
+						<p>&nbsp;&nbsp;.factory('myService', function() {</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;return function(msg) {</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log(msg);</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;};</p>
+						<p>&nbsp;&nbsp;});</p>
+					</code>
+				</section>
+				<section ng-non-bindable>
+					<code style="text-align:left">
+						<p>angular</p>
+						<p>&nbsp;&nbsp;.controller('myController', function(myService) {</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;myService("This gets logged.");</p>
+						<p>&nbsp;&nbsp;});</p>
+					</code>
+				</section>
+				<section ng-non-bindable>
+					<code style="text-align:left">
+						<p>angular</p>
+						<p>&nbsp;&nbsp;.controller('myController', </p>
+						<p>&nbsp;&nbsp;['myService', function(mySerVar) {</p>
+						<p>&nbsp;&nbsp;&nbsp;&nbsp;mySerVar("This gets logged.");</p>
+						<p>&nbsp;&nbsp;}]);</p>
+					</code>
+				</section>
 			</section>
 			<section>
 				<h2>Further Study</h2>
